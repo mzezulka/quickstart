@@ -18,12 +18,12 @@ package org.jboss.as.quickstarts.ejb.remote.stateless;
 
 import javax.ejb.Remote;
 import javax.ejb.Stateless;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
-/**
- * @author Jaikiran Pai
- */
 @Stateless
 @Remote(RemoteCalculator.class)
+@TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class CalculatorBean implements RemoteCalculator {
 
     @Override

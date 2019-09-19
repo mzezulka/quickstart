@@ -18,12 +18,12 @@ package org.jboss.as.quickstarts.ejb.remote.stateful;
 
 import javax.ejb.Remote;
 import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 
-/**
- * @author Jaikiran Pai
- */
 @Stateful
 @Remote(RemoteCounter.class)
+@TransactionAttribute(TransactionAttributeType.MANDATORY)
 public class CounterBean implements RemoteCounter {
 
     private int count = 0;
