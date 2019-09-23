@@ -20,6 +20,8 @@ import javax.ejb.Remote;
 import javax.ejb.Stateful;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 @Stateful
 @Remote(RemoteCounter.class)
@@ -28,18 +30,29 @@ public class CounterBean implements RemoteCounter {
 
     private int count = 0;
 
+    @PersistenceContext
+    private EntityManager em;
+
     @Override
     public void increment() {
-        this.count++;
+        dbSave(new DummyEntity(this.count++));
     }
 
     @Override
     public void decrement() {
-        this.count--;
+        dbSave(new DummyEntity(this.count--));
     }
 
     @Override
     public int getCount() {
         return this.count;
+    }
+
+    private void dbSave(DummyEntity quickstartEntity) {
+        if (quickstartEntity.isTransient()) {
+            em.persist(quickstartEntity);
+        } else {
+            em.merge(quickstartEntity);
+        }
     }
 }
