@@ -41,6 +41,12 @@
 			<artifactId>jboss-annotations-api_1.3_spec</artifactId>
 			<scope>provided</scope>
 		</dependency>
+    
+        <dependency>
+            <groupId>org.jboss</groupId>
+            <artifactId>jboss-ejb-client</artifactId>
+            <version>4.1.0.Final-SNAPSHOT</version>
+        </dependency>
 
 		<!-- Import the EJB API, we use provided scope as the API is included in 
 			JBoss EAP -->
