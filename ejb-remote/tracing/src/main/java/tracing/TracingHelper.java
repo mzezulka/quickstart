@@ -1,11 +1,8 @@
-package org.jboss.as.quickstarts.ejb.remote.tracing;
+package tracing;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-
-import org.jboss.ejb.protocol.remote.tracing.SpanCodec;
-import org.jboss.ejb.protocol.remote.tracing.SpanFormat;
 
 import io.jaegertracing.Configuration;
 import io.jaegertracing.Configuration.ReporterConfiguration;
@@ -29,9 +26,6 @@ public class TracingHelper {
                 .withSampler(samplerConfig)
                 .withReporter(reporterConfig)
                 .getTracerBuilder();
-        // We only need the extracting side since ejb server will not propagate any spans remotely, only
-        // accept them
-        bldr.registerExtractor(SpanFormat.EJB, new SpanCodec());
         return bldr.build();
     }
 

@@ -1,4 +1,4 @@
-package org.jboss.as.quickstarts.ejb.remote.tracing;
+package tracing;
 
 import java.util.Properties;
 
