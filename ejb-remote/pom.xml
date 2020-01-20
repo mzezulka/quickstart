@@ -48,7 +48,6 @@
     <modules>
         <module>server-side</module>
         <module>client</module>
-        <module>tracing</module>
     </modules>
 
     <build>

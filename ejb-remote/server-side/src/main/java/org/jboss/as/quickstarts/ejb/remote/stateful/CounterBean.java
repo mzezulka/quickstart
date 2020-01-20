@@ -23,6 +23,11 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import io.opentracing.Scope;
+import io.opentracing.Span;
+import io.opentracing.Tracer;
+import io.opentracing.util.GlobalTracer;
+
 @Stateful
 @Remote(RemoteCounter.class)
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
@@ -35,7 +40,12 @@ public class CounterBean implements RemoteCounter {
 
     @Override
     public void increment() {
+        Tracer.SpanBuilder bldr = GlobalTracer.get().buildSpan("INCREMENT-SERVER-SIDE");
+        Span span = bldr.start();
+        Scope sc = GlobalTracer.get().activateSpan(span);
         dbSave(new DummyEntity(this.count++));
+        sc.close();
+        span.finish();
     }
 
     @Override
