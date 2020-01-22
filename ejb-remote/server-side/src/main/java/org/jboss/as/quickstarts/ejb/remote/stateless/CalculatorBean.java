@@ -21,6 +21,10 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 
+import io.opentracing.Scope;
+import io.opentracing.Span;
+import io.opentracing.util.GlobalTracer;
+
 @Stateless
 @Remote(RemoteCalculator.class)
 @TransactionAttribute(TransactionAttributeType.MANDATORY)
@@ -28,11 +32,21 @@ public class CalculatorBean implements RemoteCalculator {
 
     @Override
     public int add(int a, int b) {
-        return a + b;
+        Span s = GlobalTracer.get().buildSpan("CalculatorBean/add").start();
+        try(Scope sc = GlobalTracer.get().activateSpan(s)) {
+            return a + b;
+        } finally {
+            s.finish();
+        }
     }
 
     @Override
     public int subtract(int a, int b) {
-        return a - b;
+        Span s = GlobalTracer.get().buildSpan("CalculatorBean/substract").start();
+        try(Scope sc = GlobalTracer.get().activateSpan(s)) {
+            return a - b;
+        } finally {
+            s.finish();
+        }
     }
 }

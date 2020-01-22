@@ -25,7 +25,6 @@ import javax.persistence.PersistenceContext;
 
 import io.opentracing.Scope;
 import io.opentracing.Span;
-import io.opentracing.Tracer;
 import io.opentracing.util.GlobalTracer;
 
 @Stateful
@@ -40,22 +39,32 @@ public class CounterBean implements RemoteCounter {
 
     @Override
     public void increment() {
-        Tracer.SpanBuilder bldr = GlobalTracer.get().buildSpan("INCREMENT-SERVER-SIDE");
-        Span span = bldr.start();
-        Scope sc = GlobalTracer.get().activateSpan(span);
-        dbSave(new DummyEntity(this.count++));
-        sc.close();
-        span.finish();
+        Span s = GlobalTracer.get().buildSpan("CounterBean/increment").start();
+        try(Scope sc = GlobalTracer.get().activateSpan(s)) {
+            dbSave(new DummyEntity(this.count++));
+        } finally {
+            s.finish();
+        }
     }
 
     @Override
     public void decrement() {
-        dbSave(new DummyEntity(this.count--));
+        Span s = GlobalTracer.get().buildSpan("CounterBean/decrement").start();
+        try(Scope sc = GlobalTracer.get().activateSpan(s)) {
+            dbSave(new DummyEntity(this.count--));
+        } finally {
+            s.finish();
+        }
     }
 
     @Override
     public int getCount() {
-        return this.count;
+        Span s = GlobalTracer.get().buildSpan("CounterBean/getCount").start();
+        try(Scope sc = GlobalTracer.get().activateSpan(s)) {
+            return this.count;
+        } finally {
+            s.finish();
+        }
     }
 
     private void dbSave(DummyEntity quickstartEntity) {
