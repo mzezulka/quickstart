@@ -33,7 +33,7 @@ public class EnhancedCounterBean implements RemoteCounter {
     @Resource(lookup = "java:/jms/queue/DummyQueue")
     private Queue queue;
 
-    
+
     @PersistenceContext
     private EntityManager em;
 
@@ -81,7 +81,7 @@ public class EnhancedCounterBean implements RemoteCounter {
             throw new RuntimeException(e.getMessage(), e);
         }
     }
-    
+
     private void dbSave(DummyEntity quickstartEntity) {
         if (quickstartEntity.isTransient()) {
             em.persist(quickstartEntity);

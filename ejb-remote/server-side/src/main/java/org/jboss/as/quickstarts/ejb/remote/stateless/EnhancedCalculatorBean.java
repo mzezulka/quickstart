@@ -33,10 +33,10 @@ public class EnhancedCalculatorBean implements RemoteCalculator {
     @Resource(lookup = "java:/jms/queue/DummyQueue")
     private Queue queue;
 
-    
+
     @PersistenceContext
     private EntityManager em;
-    
+
     @Override
     public int add(int a, int b) {
         Span s = GlobalTracer.get().buildSpan("EnhancedCalculatorBean/add").start();
@@ -58,7 +58,7 @@ public class EnhancedCalculatorBean implements RemoteCalculator {
             s.finish();
         }
     }
-    
+
     protected void jmsSend(final String message) {
         Tracer t = GlobalTracer.get();
         try (TracingConnection connection = new TracingConnection(factory.createXAConnection(), t);
@@ -72,7 +72,7 @@ public class EnhancedCalculatorBean implements RemoteCalculator {
             throw new RuntimeException(e.getMessage(), e);
         }
     }
-    
+
     private void dbSave(DummyEntity quickstartEntity) {
         if (quickstartEntity.isTransient()) {
             em.persist(quickstartEntity);
