@@ -57,6 +57,12 @@
     </dependency>
 
     <dependency>
+      <groupId>io.opentracing.contrib</groupId>
+      <artifactId>opentracing-jms-2</artifactId>
+      <version>0.1.6</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.hibernate.javax.persistence</groupId>
       <artifactId>hibernate-jpa-2.0-api</artifactId>
       <version>1.0.1.Final</version>
